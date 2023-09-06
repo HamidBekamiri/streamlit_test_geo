@@ -9,7 +9,7 @@ from shapely.geometry import Point
 st.title("Analyzing Public Schools in Seattle Neighborhoods")
 
 # Fetch Data
-@st.cache
+@st.cache_data(allow_output_mutation=True)
 def load_data():
     gdf = gpd.read_file('https://raw.githubusercontent.com/aaubs/ds-master/main/data/Neighborhood_Map_Atlas_Districts.geojson')
     gdf_ps = gpd.read_file('https://raw.githubusercontent.com/aaubs/ds-master/main/data/Public_Schools.geojson')
@@ -20,12 +20,11 @@ gdf, gdf_ps = load_data()
 # Convert GeoDataFrame to DataFrame for Streamlit map
 gdf['lon'] = gdf.geometry.centroid.x
 gdf['lat'] = gdf.geometry.centroid.y
-st.write("Seattle Neighborhoods")
-st.map(gdf[['lat', 'lon']])
+
 
 # Display a map
 st.write("Seattle Neighborhoods")
-st.map(gdf)
+st.map(gdf[['lat', 'lon']])
 
 # Question 1: Number of Schools in Each Neighborhood
 st.write("## Number of Schools in Each Neighborhood")
