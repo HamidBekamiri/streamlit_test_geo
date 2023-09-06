@@ -17,6 +17,12 @@ def load_data():
 
 gdf, gdf_ps = load_data()
 
+# Convert GeoDataFrame to DataFrame for Streamlit map
+gdf['lon'] = gdf.geometry.centroid.x
+gdf['lat'] = gdf.geometry.centroid.y
+st.write("Seattle Neighborhoods")
+st.map(gdf[['lat', 'lon']])
+
 # Display a map
 st.write("Seattle Neighborhoods")
 st.map(gdf)
