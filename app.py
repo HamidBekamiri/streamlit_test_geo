@@ -9,7 +9,7 @@ from shapely.geometry import Point
 st.title("Analyzing Public Schools in Seattle Neighborhoods")
 
 # Fetch Data
-@st.cache_data(allow_output_mutation=True)
+# @st.cache_data(allow_output_mutation=True)
 def load_data():
     gdf = gpd.read_file('https://raw.githubusercontent.com/aaubs/ds-master/main/data/Neighborhood_Map_Atlas_Districts.geojson')
     gdf_ps = gpd.read_file('https://raw.githubusercontent.com/aaubs/ds-master/main/data/Public_Schools.geojson')
