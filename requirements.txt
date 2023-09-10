@@ -1,4 +1,5 @@
 streamlit
+foluim
 geopandas
 contextily
 geoplot
