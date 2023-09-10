@@ -33,6 +33,40 @@ def display_folium_map(gdf, title):
     st.subheader(title)
     folium_static(m)
 
+# Perform Spatial Analysis
+perform_analysis = st.sidebar.button("Perform Spatial Analysis")
+
+if perform_analysis:
+    # Spatial join of police data with neighborhood data
+    joined_police_gdf = gpd.sjoin(gdf_police, gdf, how="left", op="within")
+    
+    # 1. Common neighborhoods with police-involved shootings
+    st.subheader("Common Neighborhoods with Police-Involved Shootings")
+    st.write(joined_police_gdf.L_HOOD.value_counts())
+    
+    # 2. Neighborhoods without any police-involved shootings
+    st.subheader("Neighborhoods Without Any Police-Involved Shootings")
+    no_shootings = gdf[~gdf.L_HOOD.isin(joined_police_gdf.L_HOOD.unique())]
+    st.write(no_shootings['L_HOOD'])
+    
+    # 3. Are there any schools close to locations where police-involved shootings have occurred?
+    st.subheader("Schools Close to Police-Involved Shootings")
+    joined_police_ps = gpd.sjoin(gdf_police, gdf_ps, how='left', op='within')
+    st.write(joined_police_ps['NAME'].unique())
+    
+    # 4. Types of schools close to police-involved shootings
+    st.subheader("Types of Schools Close to Police-Involved Shootings")
+    st.write(joined_police_ps['TYPE'].value_counts())
+    
+    # 5. Are there any schools that have not had any police-involved shootings?
+    st.subheader("Schools Without Any Police-Involved Shootings")
+    st.write(gdf_ps[~gdf_ps['NAME'].isin(joined_police_ps['NAME'].unique())]['NAME'])
+    
+    # 6. Which school has had the most police-involved shootings?
+    st.subheader("School with the Most Police-Involved Shootings")
+    most_affected_school = joined_police_ps['NAME'].value_counts().idxmax()
+    st.write(most_affected_school)
+
 # Display Maps
 show_police = st.sidebar.checkbox("Show Police Shootings", True)
 show_schools = st.sidebar.checkbox("Show Schools", True)
@@ -42,19 +76,3 @@ if show_police:
 
 if show_schools:
     display_folium_map(gdf_ps, "Locations of Schools")
-
-# Perform Spatial Analysis
-perform_analysis = st.sidebar.button("Perform Spatial Analysis")
-
-if perform_analysis:
-    # Spatial join of police data with neighborhood data
-    joined_police_gdf = gpd.sjoin(gdf_police, gdf, how="left", op="within")
-    
-    st.subheader("Common Neighborhoods with Police-Involved Shootings")
-    st.write(joined_police_gdf.L_HOOD.value_counts())
-    
-    # Spatial join of police data with public school data
-    joined_police_ps = gpd.sjoin(gdf_police, gdf_ps, how='left', op='within')
-    
-    st.subheader("Types of Schools Close to Police-Involved Shootings")
-    st.write(joined_police_ps.TYPE.value_counts())
