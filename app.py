@@ -4,7 +4,6 @@ import pandas as pd
 from shapely.geometry import Point
 
 # Load Data
-@st.cache
 def load_data():
     police = pd.read_csv('https://raw.githubusercontent.com/aaubs/ds-master/main/data/geopandas_data/SPD_Officer_Involved_Shooting__OIS__Data.csv')
     gdf_ps = gpd.read_file('https://raw.githubusercontent.com/aaubs/ds-master/main/data/Public_Schools.geojson')
