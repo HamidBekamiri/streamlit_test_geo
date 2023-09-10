@@ -36,7 +36,8 @@ if perform_analysis:
 
     # 3. Schools close to locations where police-involved shootings occurred
     st.subheader("Schools Close to Police-Involved Shootings")
-    joined_police_ps = gpd.sjoin_nearest(gdf_police, gdf_ps, how='left', predicate="dwithin", distance=0.09)
+    joined_police_ps = gpd.sjoin_nearest(gdf_police, gdf_ps, how='left', distance=0.09)
+    schools_close_to_shootings = joined_police_ps['NAME'].value_counts()
     schools_close_to_shootings = joined_police_ps['NAME'].value_counts()
     st.write(schools_close_to_shootings)
 
