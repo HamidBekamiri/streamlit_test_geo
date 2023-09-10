@@ -14,7 +14,7 @@ def load_data():
 st.title("Analyzing Police-Involved Shootings and Schools in Seattle")
 
 # Load the data
-police, gdf_ps, gdf, gdf_police = load_data()
+police, gdf_ps, gdf = load_data()
 
 # Sidebar
 st.sidebar.title("Options")
