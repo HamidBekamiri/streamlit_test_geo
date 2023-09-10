@@ -5,8 +5,11 @@ from shapely.geometry import Point
 
 @st.cache
 def load_data():
-    # Your data loading logic here
-    return some_data
+    police = pd.read_csv('https://raw.githubusercontent.com/aaubs/ds-master/main/data/geopandas_data/SPD_Officer_Involved_Shooting__OIS__Data.csv')
+    gdf_ps = gpd.read_file('https://raw.githubusercontent.com/aaubs/ds-master/main/data/Public_Schools.geojson')
+    gdf = gpd.read_file('https://raw.githubusercontent.com/aaubs/ds-master/main/data/geopandas_data/Neighborhood_Map_Atlas_Districts.geojson')
+    return police, gdf_ps, gdf
+
 
 st.title("Analyzing Police-Involved Shootings and Schools in Seattle")
 
