@@ -32,12 +32,28 @@ questions = [
 selected_questions = st.sidebar.multiselect("Select Questions to Answer:", questions)
 
 # Dummy data; replace with real analysis
-most_common_neighborhoods = "Neighborhood A, Neighborhood B"
-neighborhoods_no_incidents = "Neighborhood C"
-schools_close_to_shootings = "School A, School B"
-types_of_schools = "Elementary Schools"
-schools_no_shootings = "School C, School D"
-most_affected_school = "School A"
+# Assuming 'Neighborhood' is a column in your police DataFrame
+most_common_neighborhoods = police['Neighborhood'].value_counts().index.tolist()
+
+# Assuming 'Neighborhood' is also a column in your gdf DataFrame (the one for neighborhoods)
+neighborhoods_in_gdf = gdf['Neighborhood'].unique().tolist()
+neighborhoods_no_incidents = list(set(neighborhoods_in_gdf) - set(most_common_neighborhoods))
+
+# Perform spatial join to find schools close to police-involved shootings
+# Assuming 'geometry' column exists in both GeoDataFrames
+joined_police_ps = gpd.sjoin(gdf_ps, police, how='left', op='within')  # Replace with your logic for "closeness"
+schools_close_to_shootings = joined_police_ps['School_Name'].unique().tolist()
+
+# Find types of those schools
+types_of_schools = joined_police_ps['School_Type'].unique().tolist()
+
+# Find schools with no shootings
+all_schools = gdf_ps['School_Name'].unique().tolist()
+schools_no_shootings = list(set(all_schools) - set(schools_close_to_shootings))
+
+# Find the most affected school
+most_affected_school = joined_police_ps['School_Name'].value_counts().idxmax()
+
 
 if perform_analysis:
 
