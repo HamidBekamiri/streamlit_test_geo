@@ -3,6 +3,7 @@ import geopandas as gpd
 import pandas as pd
 from shapely.geometry import Point
 
+# Load Data
 @st.cache
 def load_data():
     police = pd.read_csv('https://raw.githubusercontent.com/aaubs/ds-master/main/data/geopandas_data/SPD_Officer_Involved_Shooting__OIS__Data.csv')
