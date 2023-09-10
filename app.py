@@ -3,7 +3,7 @@ import geopandas as gpd
 import pandas as pd
 from shapely.geometry import Point
 
-@st.cache_data(allow_output_mutation=True)  # Corrected Caching Method
+@st.cache
 def load_data():
     # Your data loading logic here
     return some_data
